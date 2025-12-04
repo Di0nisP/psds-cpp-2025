@@ -1,0 +1,6 @@
+add_subdirectory(swap_ptr)
+add_subdirectory(func_array)
+add_subdirectory(longest)
+add_subdirectory(last_of_us)
+add_subdirectory(little_big)
+add_subdirectory(pretty_array)

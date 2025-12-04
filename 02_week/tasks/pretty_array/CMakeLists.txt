@@ -1,0 +1,1 @@
+add_gtest(test_pretty_array test.cpp)

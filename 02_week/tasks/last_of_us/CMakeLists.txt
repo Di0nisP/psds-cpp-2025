@@ -1,0 +1,1 @@
+add_gtest(test_last_of_us test.cpp)

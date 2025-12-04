@@ -1,0 +1,68 @@
+{
+  "addition": {
+    "max_score": 100,
+    "deadline": "2025-12-31 23:59",
+    "description": "Сложение чисел"
+  },
+  "rms": {
+    "max_score": 100,
+    "deadline": "2025-11-28 23:59",
+    "description": "Вычисление RMS"
+  },
+  "print_bits": {
+    "max_score": 100,
+    "deadline": "2025-11-28 23:59",
+    "description": "Битовое представление числа"
+  },
+  "check_flags": {
+    "max_score": 100,
+    "deadline": "2025-11-28 23:59",
+    "description": "Флаги битовой маски"
+  },
+  "length_lit": {
+    "max_score": 100,
+    "deadline": "2025-11-28 23:59",
+    "description": "Пользовательские литералы длины"
+  },
+  "quadratic": {
+    "max_score": 200,
+    "deadline": "2025-11-28 23:59",
+    "description": "Решение квадратного уравнения"
+  },
+  "char_changer": {
+    "max_score": 300,
+    "deadline": "2025-11-28 23:59",
+    "description": "Изменение символов"
+  },
+
+  "swap_ptr": {
+    "max_score": 100,
+    "deadline": "2025-12-09 23:59",
+    "description": "Обмен указателей"
+  },
+  "func_array": {
+    "max_score": 100,
+    "deadline": "2025-12-09 23:59",
+    "description": "Массив функций"
+  },
+  "longest": {
+    "max_score": 200,
+    "deadline": "2025-12-09 23:59",
+    "description": "Найти самую длинную подпоследовательность"
+  },
+  "last_of_us": {
+    "max_score": 200,
+    "deadline": "2025-12-09 23:59",
+    "description": "Найти последний элемент удовлетворяющий условию"
+  },
+  "little_big": {
+    "max_score": 200,
+    "deadline": "2025-12-09 23:59",
+    "description": "Представление числа в памяти"
+  },
+  "pretty_array": {
+    "max_score": 200,
+    "deadline": "2025-12-09 23:59",
+    "description": "Форматированный вывод массива"
+  }
+}

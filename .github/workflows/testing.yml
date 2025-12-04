@@ -1,6 +1,6 @@
 name: Testing Tasks
 
-on: [push]
+on: [push, pull_request]
 
 jobs:
   test:
@@ -24,12 +24,21 @@ jobs:
             changed_files=$(git ls-files)
           fi
           
-          echo "Changed files: $changed_files"
+          echo "Changed files:"
+          echo "$changed_files"
           
-          tasks=("addition" "rms" "print_bits" "check_flags" "length_lit" "quadratic" "char_changer")
+          tasks=("addition" "rms" "print_bits" "check_flags" "length_lit" "quadratic" "char_changer"
+                 "swap_ptr" "func_array" "longest" "last_of_us" "little_big" "pretty_array")
+          
+          declare -i passed_count=0
+          declare -i failed_count=0
+          declare -i task_count=0
+          
+          echo "=== Starting tests for changed tasks ==="
           
           for task in "${tasks[@]}"; do
-            if echo "$changed_files" | grep -q "$task/"; then
+            if echo "$changed_files" | grep -q "tasks/$task/"; then
+              task_count+=1
               echo "=== Processing $task ==="
           
               if cmake --build build --target test_$task; then
@@ -37,13 +46,31 @@ jobs:
                 
                 if ./build/tasks/test_$task; then
                   echo "✅ test_$task PASSED"
+                  passed_count+=1
                 else
                   echo "❌ test_$task FAILED"
-                  exit 1
+                  failed_count+=1
                 fi
               else
                 echo "❌ test_$task build FAILED"
-                exit 1
+                failed_count+=1
               fi
             fi
           done
+          
+          echo "=== Test Results Summary ==="
+          echo "Total tasks in list: ${#tasks[@]}"
+          echo "Processed: $task_count"
+          echo "✅ Passed: $passed_count"
+          echo "❌ Failed: $failed_count"
+
+          if [ $failed_count -gt 0 ]; then
+            echo "❌ Some tasks failed!"
+            exit 1
+          elif [ $task_count -eq 0 ]; then
+            echo "No tasks were processed (no changes)"
+            exit 0
+          else
+            echo "✅ All processed tasks passed!"
+            exit 0
+          fi

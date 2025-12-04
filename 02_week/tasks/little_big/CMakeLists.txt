@@ -1,0 +1,1 @@
+add_gtest(test_little_big test.cpp)
