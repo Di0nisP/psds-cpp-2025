@@ -7,7 +7,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON) # Гарантирует использов�
 set(EXAMPLES_DIR examples) # Определим переменную с именем директории
 set(TASKS_DIR tasks)
 
-# add_subdirectory(tasks)
+#add_subdirectory(tasks)
 
 # Создать исполняемый файл для каждого примера
 if (BUILD_EXAMPLES_04_WEEK)
