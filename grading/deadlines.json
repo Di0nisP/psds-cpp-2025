@@ -131,5 +131,26 @@
     "max_score": 400,
     "deadline": "2025-12-26 23:59",
     "description": "Комплексная амплитуда"
+  },
+
+  "tracer": {
+    "max_score": 100,
+    "deadline": "2026-02-16 23:59",
+    "description": "Трассировщик"
+  },
+  "string_view": {
+    "max_score": 200,
+    "deadline": "2026-02-16 23:59",
+    "description": "Представление строки"
+  },
+  "cow_string": {
+    "max_score": 300,
+    "deadline": "2026-02-16 23:59",
+    "description": "Коровья строка"
+  },
+  "simple_vector": {
+    "max_score": 400,
+    "deadline": "2026-02-16 23:59",
+    "description": "Простой вектор"
   }
 }

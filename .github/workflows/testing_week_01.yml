@@ -18,6 +18,9 @@ on:
           - quadratic
           - char_changer
 
+  schedule:
+    - cron: '59 20 4 12 *'  # UTC: 20:59 = 23:59 MSK 4 December
+
 jobs:
   test:
     runs-on: ubuntu-latest
@@ -33,7 +36,8 @@ jobs:
       - name: Determine tasks to run
         id: get-tasks
         run: |
-          if [ "${{ github.event.inputs.tasks }}" = "all" ]; then
+          if [["${{ github.event_name }}" = "schedule"]] || 
+            [[ "${{ github.event.inputs.tasks }}" = "all" ]]; then
             # Find all tasks
             TASKS=()
             for dir in 01_week/tasks/*/; do
@@ -48,12 +52,18 @@ jobs:
 
       - name: Build and run tests for selected tasks
         run: |
+          echo "Event: ${{ github.event_name }}"
+          echo "Tasks to test: '${{ steps.get-tasks.outputs.tasks }}'"
           
           IFS=' ' read -ra tasks <<< "${{ steps.get-tasks.outputs.tasks }}"
           
           declare -i passed_count=0
           declare -i failed_count=0
           declare -i task_count=0
+          
+          # task name arrays
+          passed_tasks=()
+          failed_tasks=()
           
           echo "=== Starting tests for selected tasks ==="
           
@@ -80,8 +90,8 @@ jobs:
           echo "=== Test Results Summary ==="
           echo "Total tasks in list: ${#tasks[@]}"
           echo "Processed: $task_count"
-          echo "✅ Passed: $passed_count"
-          echo "❌ Failed: $failed_count"
+          echo "✅ Passed: $passed_count [$(echo ${passed_tasks[@]} | tr ' ' ', ')]"
+          echo "❌ Failed: $failed_count [$(echo ${failed_tasks[@]} | tr ' ' ', ')]"
 
           if [ $failed_count -gt 0 ]; then
             echo "❌ Some tasks failed!"

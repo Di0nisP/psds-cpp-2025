@@ -11,6 +11,16 @@ function(add_gtest TARGET)
     )
 endfunction()
 
+function(add_gtest_asan TARGET)
+    add_psds_executable(${TARGET} ${ARGN})
+    target_compile_options(${TARGET} PRIVATE -g -fsanitize=address,undefined)
+    target_link_libraries(${TARGET} PRIVATE GTest::gtest GTest::gtest_main)
+    target_link_options(${TARGET} PRIVATE -fsanitize=address,undefined)
+    set_target_properties(${TARGET} PROPERTIES
+        RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_TASKS_DIR}
+    )
+endfunction()
+
 function(add_example NAME)
     if(BUILD_EXAMPLES)
         add_psds_executable(${NAME} ${ARGN})

@@ -1,6 +1,6 @@
 name: Testing Tasks
 
-on: [push, pull_request]
+on: [push]
 
 jobs:
   test:
@@ -30,11 +30,16 @@ jobs:
           tasks=("addition" "rms" "print_bits" "check_flags" "length_lit" "quadratic" "char_changer"
                  "swap_ptr" "func_array" "longest" "last_of_us" "little_big" "pretty_array"
                  "data_stats" "unique" "range" "minmax" "find_all" "os_overload" "easy_compare" "filter" "enum_operators"
-                 "stack" "queue" "ring_buffer" "phasor")
+                 "stack" "queue" "ring_buffer" "phasor"
+                 "tracer" "string_view" "cow_string" "simple_vector")
           
           declare -i passed_count=0
           declare -i failed_count=0
           declare -i task_count=0
+          
+          # task name arrays
+          passed_tasks=()
+          failed_tasks=()
           
           echo "=== Starting tests for changed tasks ==="
           
@@ -49,13 +54,16 @@ jobs:
                 if ./build/tasks/test_$task; then
                   echo "✅ test_$task PASSED"
                   passed_count+=1
+                  passed_tasks+=("$task")
                 else
                   echo "❌ test_$task FAILED"
                   failed_count+=1
+                  failed_tasks+=("$task")
                 fi
               else
                 echo "❌ test_$task build FAILED"
                 failed_count+=1
+                failed_tasks+=("$task")
               fi
             fi
           done
@@ -63,8 +71,8 @@ jobs:
           echo "=== Test Results Summary ==="
           echo "Total tasks in list: ${#tasks[@]}"
           echo "Processed: $task_count"
-          echo "✅ Passed: $passed_count"
-          echo "❌ Failed: $failed_count"
+          echo "✅ Passed: $passed_count [$(echo ${passed_tasks[@]} | tr ' ' ', ')]"
+          echo "❌ Failed: $failed_count [$(echo ${failed_tasks[@]} | tr ' ' ', ')]"
 
           if [ $failed_count -gt 0 ]; then
             echo "❌ Some tasks failed!"
