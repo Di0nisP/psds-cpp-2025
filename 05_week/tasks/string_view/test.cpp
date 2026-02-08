@@ -313,11 +313,12 @@ TEST(StringViewTest, ComplexScenario) {
     StringView level = sv.Substr(1, bracket_end - 1);
     EXPECT_EQ(level.ToString(), "INFO");
 
-    size_t time_end = sv.Find(' ', bracket_end + 2);
-    StringView datetime = sv.Substr(bracket_end + 2, time_end - bracket_end - 2);
-    EXPECT_EQ(datetime.ToString(), "2024-01-15 10:30:00");
+    size_t pos = bracket_end + 2;
+    size_t data_end = sv.Find(' ', pos);
+    StringView datetime = sv.Substr(pos, data_end - pos);
+    EXPECT_EQ(datetime.ToString(), "2024-01-15");
 
-    size_t user_start = sv.Find('\'', time_end);
+    size_t user_start = sv.Find('\'', data_end);
     size_t user_end = sv.Find('\'', user_start + 1);
     StringView username = sv.Substr(user_start + 1, user_end - user_start - 1);
     EXPECT_EQ(username.ToString(), "admin");
