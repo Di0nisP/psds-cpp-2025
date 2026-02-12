@@ -7,12 +7,17 @@
  */
 class StringView {
 public:
-    StringView();
+    StringView() = default;
 
     /// @param[in] cstr static storage duration string
     StringView(const char* cstr, size_t count = npos);
     StringView(const std::string&  cstr, size_t pos = 0, size_t count = npos);
     StringView(const std::string&& cstr, size_t pos = 0, size_t count = npos);
+
+    StringView(const StringView&) = delete;
+    StringView& operator=(const StringView&) = delete;
+    StringView(StringView&&) noexcept = default;
+    StringView& operator=(StringView&&) noexcept = default;
 
     ~StringView();
 
@@ -51,17 +56,11 @@ private:
      *
      * @note Модификация поведения std::string_view.
      */
-    const bool owner_; 
+    bool owner_ = false; 
 
     size_t size_ = 0;
     const char* data_ = nullptr;
 };
-
-StringView::StringView()
-    : owner_(false)
-{
-
-}
 
 StringView::StringView(const char* cstr, size_t count)
     : StringView(cstr, count, false)

@@ -133,7 +133,8 @@ SimpleVector& SimpleVector::operator=(SimpleVector&& other) noexcept
 
 SimpleVector::~SimpleVector()
 {
-    delete[] data_;
+    if (data_ != nullptr)
+        delete[] data_;
 }
 
 int& SimpleVector::operator[](size_t index)

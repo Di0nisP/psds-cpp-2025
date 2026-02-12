@@ -105,7 +105,8 @@ CowString::StringData::StringData(const std::string& str)
 
 CowString::StringData::~StringData() 
 {
-    delete[] data;
+    if (data != nullptr)
+        delete[] data;
 }
 
 // -------------------------------------------------------------------------
@@ -172,7 +173,7 @@ CowString& CowString::operator=(CowString&& other) noexcept
 CowString::~CowString() 
 {
     --string_data_->ref_count;
-    if (string_data_->ref_count == 0) {
+    if (string_data_->ref_count == 0 && string_data_ != nullptr) {
         delete string_data_;
     }
 }
