@@ -1,0 +1,3 @@
+add_subdirectory(unique_ptr)
+add_subdirectory(smart_ptr)
+add_subdirectory(simple_list)

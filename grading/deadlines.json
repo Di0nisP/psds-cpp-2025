@@ -152,5 +152,21 @@
     "max_score": 400,
     "deadline": "2026-02-16 23:59",
     "description": "Простой вектор"
+  },
+
+  "unique_ptr": {
+    "max_score": 200,
+    "deadline": "2026-02-23 23:59",
+    "description": "Умный указатель уникального владения"
+  },
+  "smart_ptr": {
+    "max_score": 400,
+    "deadline": "2026-02-23 23:59",
+    "description": "Умные указатели"
+  },
+  "simple_list": {
+    "max_score": 400,
+    "deadline": "2026-02-23 23:59",
+    "description": "Двусвязный список (упрощенный)"
   }
 }

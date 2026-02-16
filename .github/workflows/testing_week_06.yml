@@ -1,0 +1,104 @@
+name: Testing Tasks Week 06
+
+on:
+  workflow_dispatch:
+    inputs:
+      tasks:
+        description: 'Select tasks to test'
+        required: true
+        type: choice
+        default: 'all'
+        options:
+          - all
+          - unique_ptr
+          - smart_ptr
+          - simple_list
+
+  schedule:
+    - cron: '59 20 23 02 *'  # UTC: 20:59 = 23:59 MSK 23 February
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install compiler and CMake
+        run: sudo apt install -y cmake build-essential g++-14 libgtest-dev libgmock-dev
+
+      - name: Configure project
+        run: cmake -B build
+
+      - name: Determine tasks to run
+        id: get-tasks
+        run: |
+          if [["${{ github.event_name }}" = "schedule"]] || 
+            [[ "${{ github.event.inputs.tasks }}" = "all" ]]; then
+            # Find all tasks
+            TASKS=()
+            for dir in 06_week/tasks/*/; do
+              task=$(basename "$dir")
+              TASKS+=("$task")
+            done
+            echo "tasks=${TASKS[*]}" >> $GITHUB_OUTPUT
+          else
+            # Используем указанную задачу
+            echo "tasks=${{ github.event.inputs.tasks }}" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Build and run tests for selected tasks
+        run: |
+          echo "Event: ${{ github.event_name }}"
+          echo "Tasks to test: '${{ steps.get-tasks.outputs.tasks }}'"
+          
+          IFS=' ' read -ra tasks <<< "${{ steps.get-tasks.outputs.tasks }}"
+          
+          declare -i passed_count=0
+          declare -i failed_count=0
+          declare -i task_count=0
+          
+          # task name arrays
+          passed_tasks=()
+          failed_tasks=()
+          
+          echo "=== Starting tests for selected tasks ==="
+          
+          for task in "${tasks[@]}"; do
+            task_count+=1
+            echo "=== Processing $task ==="
+        
+            if cmake --build build --target test_$task; then
+              echo "✅ test_$task built successfully"
+              
+              if ./build/tasks/test_$task; then
+                echo "✅ test_$task PASSED"
+                passed_count+=1
+                passed_tasks+=("$task")
+              else
+                echo "❌ test_$task FAILED"
+                failed_count+=1
+                failed_tasks+=("$task")
+              fi
+            else
+              echo "❌ test_$task build FAILED"
+              failed_count+=1
+              failed_tasks+=("$task")
+            fi
+          done
+          
+          echo "=== Test Results Summary ==="
+          echo "Total tasks in list: ${#tasks[@]}"
+          echo "Processed: $task_count"
+          echo "✅ Passed: $passed_count [$(echo ${passed_tasks[@]} | tr ' ' ', ')]"
+          echo "❌ Failed: $failed_count [$(echo ${failed_tasks[@]} | tr ' ' ', ')]"
+
+          if [ $failed_count -gt 0 ]; then
+            echo "❌ Some tasks failed!"
+            exit 1
+          elif [ $task_count -eq 0 ]; then
+            echo "No tasks were processed (no changes)"
+            exit 0
+          else
+            echo "✅ All processed tasks passed!"
+            exit 0
+          fi

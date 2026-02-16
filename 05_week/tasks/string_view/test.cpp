@@ -210,14 +210,14 @@ TEST(StringViewTest, FindStringView) {
     EXPECT_EQ(sv.Find(StringView("Hello, World! Hello again! And more")), StringView::npos);
 }
 
-TEST(StringViewTest, Find_EmptyView) {
+TEST(StringViewTest, FindInEmptyView) {
     StringView sv;
 
     EXPECT_EQ(sv.Find('a'), StringView::npos);
     EXPECT_EQ(sv.Find(StringView("test")), StringView::npos);
 
     StringView empty_target("");
-    EXPECT_EQ(sv.Find(empty_target), StringView::npos);
+    EXPECT_EQ(sv.Find(empty_target), 0);
 }
 
 TEST(StringViewTest, ToString) {
