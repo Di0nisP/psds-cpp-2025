@@ -123,7 +123,7 @@ size_t StringView::Find(const StringView& substring, size_t pos) const
 {
     // Пустая подстрока 
     if (substring.Empty()) 
-        return Empty() ? npos : pos; 
+        return 0; 
     
     // Подстрока длиннее строки 
     if (substring.Size() > Size() || pos > Size() - substring.Size()) 
