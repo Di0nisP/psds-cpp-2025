@@ -655,7 +655,7 @@ TEST(MakeSharedTest, MakeSharedWithMove) {
 
     EXPECT_NE(ptr.Get(), nullptr);
     EXPECT_EQ(ptr->data(), expected);
-    EXPECT_EQ(*ptr, "test");
+    EXPECT_EQ(*ptr, "testWithLongStringForAvoidSSO");
     EXPECT_EQ(ptr.UseCount(), 1);
 }
 
