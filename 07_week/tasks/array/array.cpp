@@ -54,14 +54,14 @@ struct Array
 
     /// @name Element Access
     /// @{
-    T& operator[](size_t index) noexcept { return Data()[index]; }
-    const T& operator[](size_t index) const noexcept { return Data()[index]; }
+    constexpr T& operator[](size_t index) noexcept { return Data()[index]; }
+    constexpr const T& operator[](size_t index) const noexcept { return Data()[index]; }
 
-    T& Front() noexcept { return Data()[0]; }
-    const T& Front() const noexcept { return Data()[0]; }
+    constexpr T& Front() noexcept { return Data()[0]; }
+    constexpr const T& Front() const noexcept { return Data()[0]; }
 
-    T& Back() noexcept { return Data()[N - 1]; }
-    const T& Back() const noexcept { return Data()[N - 1]; }
+    constexpr T& Back() noexcept { return Data()[N - 1]; }
+    constexpr const T& Back() const noexcept { return Data()[N - 1]; }
 
     constexpr T* begin() noexcept { return Data(); }
     constexpr const T* begin() const noexcept { return Data(); }
@@ -221,7 +221,7 @@ requires ArrayConstraints<T, N>
 void Array<T, N>::Fill(const T& value) noexcept(std::is_nothrow_copy_assignable_v<T>) 
 requires std::copyable<T>
 {
-    std::fill_n(data_, N, value);
+    std::fill_n(Data(), N, value);
 }
 
 template <typename T, std::size_t N>
@@ -229,5 +229,5 @@ requires ArrayConstraints<T, N>
 void Array<T, N>::Swap(Array& other) noexcept(std::is_nothrow_swappable_v<T>)
 requires std::swappable<T>
 {
-    std::swap_ranges(data_, data_ + N, other.data_);
+    std::swap_ranges(Data(), Data() + Size(), other.Data());
 }
