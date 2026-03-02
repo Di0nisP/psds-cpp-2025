@@ -33,6 +33,7 @@ jobs:
                  "stack" "queue" "ring_buffer" "phasor"
                  "tracer" "string_view" "cow_string" "simple_vector"
                  "unique_ptr" "smart_ptr" "simple_list"
+                 "make_unique" "array"
           )
           
           declare -i passed_count=0
